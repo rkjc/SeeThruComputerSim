@@ -10,7 +10,7 @@ __pycache__/
 .directory
 .Trash-*
 *~
-.README.md.kate-swp*
+.*.kate-swp
 
 .DS_Store
 .AppleDouble

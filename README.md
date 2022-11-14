@@ -84,7 +84,9 @@ Instruction Set for this computer:
      0110	XOR 	Bit-wise Binary XOR of the accumulator with the value stored at operand address, saved to accumulator.
 
 I/O  data transfer instructions
-     1000	LOAD 	Load the accumulator with the value stored at an address.
+     1000	LOAD DIRECT <operand> - Load the accumulator with the value stored at the operand as an address.
+     0111 LOAD INDIRECT <operand> - Load accumulator with value from address pointed to by contents of the address pointed to by the operand.
+     1110 LOAD IMEADIATE <operand> - operand is loaded to accumulator.
      1001	STORE 	Copy the accumulator into an address.
 
 arithmetic instructions 
@@ -97,11 +99,6 @@ control instructions
      1101	IFZERO 	If the accumulator is zero, jump to a program address.
      1111	STOP 	Stop program execution.
 
-
-
-unused opcodes in this example
-     0111    (maybe implement a SKIP instruction?)
-     1110
 ```     
 --------------------------------------------------  
 Example program that counts from 1 to 9 
