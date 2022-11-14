@@ -11,23 +11,23 @@ opcode = "0000"
 operand = "0000"
 
 
-# default empty memory
-memory = ["00000000", # 0000 
-          "00000000", # 0001 
-          "00000000", # 0010 
-          "00000000", # 0011 
-          "00000000", # 0100 
-          "00000000", # 0101 
-          "00000000", # 0110 
-          "00000000", # 0111 
-          "00000000", # 1000 
-          "00000000", # 1001 
-          "00000000", # 1010 
-          "00000000", # 1011 
-          "00000000", # 1100 
-          "00000000", # 1101 
-          "00000000", # 1110 
-          "00000000"] # 1111 
+# Load Indirect example
+memory = ["01110110", # 0000 LOAD INDIRECT 0110
+          "11110000", # 0001 STOP
+          "00000000", # 0010
+          "00000000", # 0011
+          "00000000", # 0100
+          "00000000", # 0101
+          "00001101", # 0110 data (address pointer)
+          "00000000", # 0111
+          "00000000", # 1000
+          "00000000", # 1001
+          "00000000", # 1010
+          "00000000", # 1011
+          "00000000", # 1100
+          "01111110", # 1101 data
+          "00000000", # 1110
+          "00000000"] # 1111
 
 # The file  "../files/Sample-Programs-for-SeeThruComputer.txt"  contains
 # some sample programs. To use them copy the memory array initialization
@@ -125,19 +125,15 @@ def runProg():
     global opcode
     global operand
     
-    #print("running prog")
     progCntr = 0
     whileCnt = 0
     status = 1
     while(status == 1):
-        #print('while count ', whileCnt) #debug
         whileCnt += 1
         currentMem = memory[progCntr]
         opcode = currentMem[:4]
         operand = currentMem[4:]
-        #print("opcode= ", opcode, " - operand= ", operand) #debug
         doInstruction()
-        #print("*** return from doInst - PC= ", progCntr) #debug
         if clockSpd == 0:
             input("push enter for next step")
         else:
@@ -167,7 +163,6 @@ def doInstruction():
     memBinStr = memory[memLoc]
     
     if xopcode == '0000':
-        #print("inside opcode 0000")
         pass
       
     elif xopcode == '0001': # SHIFT R
@@ -208,12 +203,16 @@ def doInstruction():
            else:
               tempAccum += "1" 
         accum = tempAccum
-        
-    elif xopcode == '0111': # UNDEFINED
-        pass
-      
-    elif xopcode == '1000': # LOAD
+
+    elif xopcode == '1000': # LOAD DIRECT
         accum = memory[memLoc]
+
+    elif xopcode == '0111': # LOAD INDIRECT
+        indirectAddress = int(memory[memLoc], 2)
+        accum = memory[indirectAddress]
+
+    elif xopcode == '1110': # LOAD IMMEADIATE
+        accum = "0000" + xoperand
         
     elif xopcode == '1001': # STORE
         memory[memLoc] = accum
@@ -231,13 +230,10 @@ def doInstruction():
     elif xopcode == '1101':  # IFZERO jump
         if accum == "00000000":
             nextPC = memLoc
-        
-    elif xopcode == '1110': # UNDEFINED
-        pass
+
     elif xopcode == '1111': # STOP
         nextPC = progCntr
         status = 0
-        #print("*** called stop - PC= ", progCntr) #debug
 
     showStatus()
     
@@ -246,7 +242,7 @@ def doInstruction():
         status = 0
     else:
         progCntr = nextPC
-        #print("*** leav doInst - PC= ", progCntr) #debug
+
 
 
 def showStatus():
