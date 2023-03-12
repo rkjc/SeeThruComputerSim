@@ -2,7 +2,7 @@ SeeThruComputerSim Project
 ===
 
 > ## Simulated 4-bit computer
-
+[src/SeeThruComputerSim_cmd-line_4bit-addr-8bit-word/SeeThruComputer_cl_4-8bit ]
 <br>
 
 This simulation computer is written in Python3 and runs in a terminal, so hopefully this program should be cross platform. I tried to keep the Python code as strait forward as possible, but hey, reading someone else code is always a challenge.  

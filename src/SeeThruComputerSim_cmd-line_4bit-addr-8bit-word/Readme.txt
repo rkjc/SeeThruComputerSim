@@ -2,7 +2,7 @@ SeeThruComputer
 
 
 --------------------
-src/cmd-line_4bit-addr-8bit-word/SeeThruComputer_cl_4-8bit versions 
+src/SeeThruComputerSim_cmd-line_4bit-addr-8bit-word/SeeThruComputer_cl_4-8bit versions 
 
 This version has a 4-bit address space and 8-bit word length
 It is an all in one file, non-OOP Python3 program for simplicity and readability by Python beginers.
