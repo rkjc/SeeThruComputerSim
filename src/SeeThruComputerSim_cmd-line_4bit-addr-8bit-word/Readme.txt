@@ -51,7 +51,9 @@ will set it to run manually, press the enter key to run the net instruction.
 # -- logic --
 # shift
 #    0001	SHIFTR 	Bit shift the accumulator to the right by 1 position.
-#    0010	SHIFTL 	Bit shift the accumulator to the left by 1 position.
+
+# Shift left command replaced by print command (0010	SHIFTL 	Bit shift the accumulator to the left by 1 position.)
+#    0010   PRINT DIRECT - outputs contents of memory location to the 'terminal'
 
 # boolean
 #    0011	NOT 	Binary NOT the accumulator. The value 10101111 becomes 01010000.
