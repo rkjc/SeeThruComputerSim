@@ -32,7 +32,7 @@ terminal = ['','','','','','','','']
 
 # ================ memory contents pre-load command  - START ============
 
-# count to 2B with output
+# count to 3 with output
 memory = ["10001111", # 0000 LOAD 1111 
           "10101110", # 0001 ADD 1110
           "10011111", # 0010 STOR 1111
@@ -40,15 +40,15 @@ memory = ["10001111", # 0000 LOAD 1111
           "01101101", # 0100 XOR 1101
           "11010111", # 0101 IFZERO 0111
           "11000000", # 0110 GOTO 0000
-          "11110000", # 0111 STOP
+          "00000000", # 0111 STOP
           "00000000", # 1000 
           "00000000", # 1001  
           "00000000", # 1010 
           "00000000", # 1011 
           "00000000", # 1100 
-          "00101011", # 1101 xor comparison value
-          "00000001", # 1110 increment value
-          "00000000"] # 1111 save copy accum
+          "00000011", # 1101 xor comparison value
+          "00000001", # 1110 increment value 
+          "00000000"] # 1111 save copy accum 
 
 # ============== memory contents pre-load command - END ==================
 
@@ -88,7 +88,7 @@ The left most MSB digit is column index i = 0
 '''
 def adder_binStr(val1, val2):
     # sum = A’B’C + A’BC’ + ABC + AB’C’
-    # carry-out = AB + BC + AC
+    # carry-out = AB + BC + AC 
     numBits = len(val1)
     tempSum = ""
     # carry value is an array of chars instead of a binary as string
@@ -235,22 +235,16 @@ def doInstruction():
     memLocContentsBinStr = memory[memLocAsInteger]
     
     # ---------- OPCODE interpreter ------------
-    if xopcode == '0000':  # NOP
-        currentInst = "NOP"
-        # does nothing
-        pass
-      
-    elif xopcode == '0001': # SHIFT R ACCUMULATOR
+
+    if xopcode == '0001': # SHIFT R ACCUMULATOR
         currentInst = "SHIFT R ACCUMULATOR"
         accum = "0" + accum[:len(accum)-1]
         
-#    elif xopcode == '0010': # SHIFT L ACCUMULATOR
-#        currentInst = "SHIFT L ACCUMULATOR"
-#        accum = accum[1:] + "0"
+    elif xopcode == '0010': # SHIFT L ACCUMULATOR
+        currentInst = "SHIFT L ACCUMULATOR"
+        accum = accum[1:] + "0"
 
-    elif xopcode == '0010': # PRINT DIRECT
-        currentInst = "PRINT DIRECT"
-        send_to_output(memory[memLocAsInteger])
+
         
     #----------- Logical -------------------
     elif xopcode == '0011': # NOT
@@ -341,11 +335,18 @@ def doInstruction():
         if accum == "00000000":
             nextPC = memLocAsInteger
 
-    elif xopcode == '1111': # STOP
+    elif xopcode == '0000': # STOP
         currentInst = "STOP"
         status = 0 # stop execution
 
-    # don't really need this here, but it helps to indicate the end of this long function
+    #---------- Input/Output -------------------
+
+    elif xopcode == '1111': # PRINT DIRECT
+        currentInst = "PRINT DIRECT"
+        send_to_output(memory[memLocAsInteger])
+        
+
+    # don't really need this 'return', but it helps to indicate the end of this long function
     return
 
 #-----------------------------------------------------------------------
@@ -385,7 +386,7 @@ def showStatus():
     print('''  ===================================================================
   | memory contents:               |
   | PC | address  |   stored data  |
-  |                                |      -------------------------------''')
+  |                                |      --- currentOperation ----------''')
       
     count = 0
     for count in range(16):
@@ -394,20 +395,15 @@ def showStatus():
         if count == progCntr:
             lineLead = "  | PC>   "
             
-            
-        #currentOp = str(opcode)
-
         if count == 0:
-            lineTail = "     |    currentOperation:          |"
-        if count == 1:
             lineTail = "     |   " + currentOp + (" " * (28 - len(currentOp))) + "|"    
-        if count == 2:
+        if count == 1:
             lineTail = "     |    " + currentInst + (" " * (27 - len(currentInst))) + "|"
-        if count == 3:
+        if count == 2:
             lineTail = "      -------------------------------"
             
         if count == 5:
-            lineTail = "      -------------------------------"
+            lineTail = "      --- terminal output -----------"
         if count == 6:
             lineTail = "     |" + terminal[0]+ (" " * (31 - len(terminal[0]))) + "|"
         if count == 7:
